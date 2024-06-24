@@ -1,80 +1,104 @@
-#for stopping program execution for some time
-import time
+import tkinter as tk
+from tkinter import messagebox
 
-print("Please insert Your CARD")
+# Simple in-memory data structure for user accounts
+accounts = {
+    'user1': {'pin': '1234', 'balance': 1000},
+    'user2': {'pin': '5678', 'balance': 500}
+}
 
-#for card processing
-time.sleep(5)
+# Global variables for current user and balance
+current_user = None
+current_balance = 0
 
-password = 1234
+def authenticate():
+    global current_user, current_balance
+    username = username_entry.get()
+    pin = pin_entry.get()
+    
+    if username in accounts and accounts[username]['pin'] == pin:
+        current_user = username
+        current_balance = accounts[username]['balance']
+        messagebox.showinfo("Login Successful", "Welcome, " + username + "!")
+        show_main_screen()
+    else:
+        messagebox.showerror("Login Failed", "Invalid username or PIN")
 
-#taking atm pin from user
-pin = int(input("enter your atm pin "))
+def show_main_screen():
+    login_frame.pack_forget()
+    main_frame.pack()
 
-#user account balance
-balance = 5000
+def view_balance():
+    balance_label.config(text="Current Balance: $" + str(current_balance))
 
-#checking pin is valid or not 
-if pin == password:
-    #loop will run user get free 
-    while True:
+def deposit_money():
+    global current_balance
+    amount = deposit_entry.get()
+    if amount.isdigit():
+        current_balance += int(amount)
+        accounts[current_user]['balance'] = current_balance
+        messagebox.showinfo("Deposit Successful", "Deposited: $" + amount)
+        deposit_entry.delete(0, tk.END)
+    else:
+        messagebox.showerror("Invalid Input", "Please enter a valid amount")
 
-        #Showing  info to user
+def withdraw_money():
+    global current_balance
+    amount = withdraw_entry.get()
+    if amount.isdigit():
+        amount = int(amount)
+        if amount <= current_balance:
+            current_balance -= amount
+            accounts[current_user]['balance'] = current_balance
+            messagebox.showinfo("Withdrawal Successful", "Withdrew: $" + str(amount))
+            withdraw_entry.delete(0, tk.END)
+        else:
+            messagebox.showerror("Insufficient Funds", "Not enough balance")
+    else:
+        messagebox.showerror("Invalid Input", "Please enter a valid amount")
 
-        print(""" 
-			1 == balance
-			2 == withdraw balance
-			3 == deposit balance
-			4 == exit
-			"""
-              )
+def logout():
+    main_frame.pack_forget()
+    login_frame.pack()
 
-        try:    
-             #taking an option from user
-            option = int(input("Please enter your choice "))
-        except:
-            print("Please enter valid option")
-        
-        #for option 1        
-        if option == 1:
-            print(f"Your current balance is {balance}")
-                                     
-        if option == 2:
+# Setup main window
+window = tk.Tk()
+window.title("ATM Interface")
+window.geometry("300x400")
 
-            withdraw_amount = int(input("please enter withdraw_amount "))
+# Login Frame
+login_frame = tk.Frame(window)
+login_frame.pack(pady=20)
 
-            
+tk.Label(login_frame, text="ATM Login", font=("Arial", 16)).pack(pady=10)
+tk.Label(login_frame, text="Username:").pack()
+username_entry = tk.Entry(login_frame)
+username_entry.pack(pady=5)
+tk.Label(login_frame, text="PIN:").pack()
+pin_entry = tk.Entry(login_frame, show="*")
+pin_entry.pack(pady=5)
+tk.Button(login_frame, text="Login", command=authenticate).pack(pady=10)
 
-            balance = balance - withdraw_amount
+# Main Frame
+main_frame = tk.Frame(window)
 
-            print(f"{withdraw_amount} is debited from your account")
+tk.Label(main_frame, text="ATM Main Screen", font=("Arial", 16)).pack(pady=10)
+balance_label = tk.Label(main_frame, text="Current Balance: $0")
+balance_label.pack(pady=10)
 
-            
+tk.Button(main_frame, text="View Balance", command=view_balance).pack(pady=5)
 
-            print(f"your updated balance is {balance}")
+tk.Label(main_frame, text="Deposit Amount:").pack(pady=5)
+deposit_entry = tk.Entry(main_frame)
+deposit_entry.pack(pady=5)
+tk.Button(main_frame, text="Deposit", command=deposit_money).pack(pady=5)
 
-            
+tk.Label(main_frame, text="Withdraw Amount:").pack(pady=5)
+withdraw_entry = tk.Entry(main_frame)
+withdraw_entry.pack(pady=5)
+tk.Button(main_frame, text="Withdraw", command=withdraw_money).pack(pady=5)
 
-        if option == 3:
+tk.Button(main_frame, text="Logout", command=logout).pack(pady=20)
 
-            deposit_amount = int(input("please enter deposit_amount"))
-
-            balance = balance + deposit_amount
-
-            
-
-            print(f"{deposit_amount} is credited to your account")
-
-
-
-            print(f"your updated balance is {balance}")
-  
-
-
-        if option == 4:
-
-            break
-
-
-else:
-    print("wrong pin Please try again")
+# Start the application
+window.mainloop()
