@@ -24,6 +24,7 @@ def authenticate():
     else:
         messagebox.showerror("Login Failed", "Invalid username or PIN")
 
+
 def show_main_screen():
     login_frame.pack_forget()
     main_frame.pack()
