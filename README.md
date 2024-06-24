@@ -1,7 +1,3 @@
-Certainly! Below is a `README.md` file for your ATM interface using Python, highlighting key features like withdrawal, balance inquiry, deposit, and exit. I've added emojis and bullet points to make it more engaging and clear.
-
----
-
 # 🏧 Python ATM Interface
 
 Welcome to the Python-based ATM Interface! This simple yet functional application allows users to perform essential banking transactions such as checking their balance, depositing money, withdrawing funds, and exiting the session. Designed for both educational and practical purposes, this project provides a straightforward approach to understanding basic financial operations and Python programming.
@@ -36,7 +32,6 @@ Ensure you have Python installed on your machine. You can download it from the [
     - Follow the on-screen prompts to complete your transaction.
 3. **Exit**: Choose the exit option to safely log out of your account.
 
-```
 
 ## 📘 Contributing
 
