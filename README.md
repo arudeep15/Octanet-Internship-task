@@ -55,4 +55,3 @@ Feel free to customize this `README.md` file further to suit your project's spec
 
 - **Make sure to replace placeholders like `https://github.com/yourusername/python-atm-interface.git` with the actual URL of your repository.**
 - **Consider adding screenshots or GIFs of your application in action for a more visual presentation.**
-- 
